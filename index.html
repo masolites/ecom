@@ -1,1 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MASOLITES ECOMAS | MAZOL Token ICO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #f1f1f1;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --platinum: #e5e4e2;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(233, 69, 96, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(21, 33, 62, 0.2) 0%, transparent 20%);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--highlight), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-left: 10px;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(135deg, var(--accent), var(--highlight));
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin: 0 15px;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background: rgba(233, 69, 96, 0.2);
+        }
+        
+        .wallet-connect {
+            display: flex;
+            align-items: center;
+        }
+        
+        .wallet-btn {
+            background: linear-gradient(90deg, var(--accent), var(--highlight));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .wallet-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .wallet-btn i {
+            margin-right: 8px;
+        }
+        
+        .wallet-info {
+            margin-left: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 0;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 40px;
+        }
+        
+        .hero-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--accent), var(--highlight));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-right: 15px;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--highlight);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+        }
+        
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .dashboard-card {
+            background: rgba(26, 26, 46, 0.7);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-header h3 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header h3 i {
+            margin-right: 10px;
+            color: var(--highlight);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: space-between;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .countdown-box {
+            background: rgba(15, 52, 96, 0.5);
+            border-radius: 10px;
+            padding: 15px;
+            flex: 1;
+            margin: 0 10px;
+        }
+        
+        .countdown-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--highlight);
+        }
+        
+        .countdown-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            text-transform: uppercase;
+        }
+        
+        .price-display {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .price-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin: 0 10px;
+        }
+        
+        .mining-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .mining-card {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .mining-card:hover {
+            transform: translateY(-5px);
+            background: rgba(15, 52, 96, 0.5);
+        }
+        
+        .mining-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .silver .mining-icon {
+            color: var(--silver);
+        }
+        
+        .gold .mining-icon {
+            color: var(--gold);
+        }
+        
+        .platinum .mining-icon {
+            color: var(--platinum);
+        }
+        
+        .mining-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+        
+        .mining-speed {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--highlight);
+        }
+        
+        .mining-btn {
+            background: rgba(233, 69, 96, 0.2);
+            border: none;
+            color: var(--text);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .mining-btn:hover {
+            background: rgba(233, 69, 96, 0.4);
+        }
+        
+        .wallet-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .wallet-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .wallet-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--highlight);
+        }
+        
+        .wallet-amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .wallet-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            background: rgba(233, 69, 96, 0.2);
+            border: none;
+            color: var(--text);
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn:hover {
+            background: rgba(233, 69, 96, 0.4);
+        }
+        
+        .voting-section {
+            text-align: center;
+        }
+        
+        .voting-timer {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            background: rgba(233, 69, 96, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .voting-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .vote-btn {
+            background: rgba(15, 52, 96, 0.5);
+            border: 2px solid var(--highlight);
+            color: var(--text);
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .vote-btn:hover {
+            background: var(--highlight);
+        }
+        
+        .referral-section {
+            background: rgba(15, 52, 96, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .referral-id {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 15px 0;
+            color: var(--platinum);
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .referral-stat {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold);
+            margin: 10px 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .mining-section, .wallet-section, .referral-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                flex-direction: column;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <h1>MASOLITES ECOMAS</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">ICO</a></li>
+                    <li><a href="#">Mining</a></li>
+                    <li><a href="#">Voting</a></li>
+                    <li><a href="#">Escrow</a></li>
+                </ul>
+            </nav>
+            <div class="wallet-connect">
+                <div class="wallet-info">
+                    <i class="fas fa-wallet"></i> NGN 15,000 | 1,250 MZLx | 350 USDT
+                </div>
+                <button class="wallet-btn">
+                    <i class="fab fa-metamask"></i> Connect Wallet
+                </button>
+            </div>
+        </header>
 
+        <section class="hero">
+            <div class="hero-content">
+                <h2>MAZOL Token Private Sale ICO</h2>
+                <p>Join the revolutionary MAZOL token ecosystem. Participate in our private sale, mine tokens at unprecedented speeds, and help shape the token's future through our unique voting system.</p>
+                <p>Starting price: <span class="price-value">$0.001</span> per MZLx token</p>
+                <div>
+                    <button class="btn">Buy MAZOL Tokens</button>
+                    <button class="btn btn-outline">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="dashboard-card" style="width: 100%; max-width: 400px;">
+                    <h3><i class="fas fa-chart-line"></i> Token Metrics</h3>
+                    <div style="margin: 20px 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Total Supply:</span>
+                            <span>100,000,000 MZLx</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Private Sale:</span>
+                            <span>40,000,000 MZLx</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Mining Reserve:</span>
+                            <span>30,000,000 MZLx</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span>Current Price:</span>
+                            <span>$0.001</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-fire"></i> Private Sale Countdown</h3>
+                <div class="price-display">
+                    Current Price: <span class="price-value">$0.001</span> (₦0.78)
+                </div>
+            </div>
+            <div class="countdown">
+                <div class="countdown-box">
+                    <div class="countdown-value">120</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value">23</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value">45</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-box">
+                    <div class="countdown-value">18</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn" style="padding: 15px 40px; font-size: 1.1rem;">
+                    <i class="fas fa-shopping-cart"></i> Buy MAZOL Tokens
+                </button>
+            </div>
+        </section>
+
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-hard-hat"></i> Token Mining</h3>
+                <div class="price-display">
+                    Mining Balance: <span class="price-value">1,250 MZLx</span>
+                </div>
+            </div>
+            <div class="mining-section">
+                <div class="mining-card silver">
+                    <div class="mining-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <h3 class="mining-title">Silver Mining</h3>
+                    <div class="mining-speed">Speed: 1x</div>
+                    <p>Basic mining for all registered users. Earn tokens by keeping the mining session active.</p>
+                    <button class="mining-btn">Start Silver Mining</button>
+                </div>
+                <div class="mining-card gold">
+                    <div class="mining-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="mining-title">Gold Mining</h3>
+                    <div class="mining-speed">Speed: 4x</div>
+                    <p>For users who purchase at least ₦100 of MZLx tokens. Enjoy 4x mining speed!</p>
+                    <button class="mining-btn">Start Gold Mining</button>
+                </div>
+                <div class="mining-card platinum">
+                    <div class="mining-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="mining-title">Platinum Mining</h3>
+                    <div class="mining-speed">Speed: 7x</div>
+                    <p>One-time registration fee of ₦1,000. Enjoy 7x mining speed and 10% crypto rewards!</p>
+                    <button class="mining-btn">Upgrade to Platinum</button>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 20px; background: rgba(15, 52, 96, 0.3); padding: 15px; border-radius: 10px;">
+                <h4><i class="fas fa-tachometer-alt"></i> Mining Session</h4>
+                <div style="font-size: 1.8rem; font-weight: 700; margin: 10px 0; color: var(--highlight);">00:23:17:45</div>
+                <div style="display: flex; justify-content: center; gap: 10px;">
+                    <button class="action-btn">Pause</button>
+                    <button class="action-btn">Stop</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h3><i class="fas fa-wallet"></i> Wallet Balances</h3>
+                <div>
+                    <button class="action-btn"><i class="fas fa-plus"></i> Deposit</button>
+                    <button class="action-btn"><i class="fas fa-exchange-alt"></i> Transfer</button>
+                </div>
+            </div>
+            <div class="wallet-section">
+                <div class="wallet-card">
+                    <div class="wallet-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3>Cash Wallet</h3>
+                    <div class="wallet-amount">₦15,000</div>
+                    <div class="wallet-actions">
+                        <button class="action-btn">Deposit</button>
+                        <button class="action-btn">Withdraw</button>
+                    </div>
+                </div>
+                <div class="wallet-card">
+                    <div class="wallet-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>MAZOL Wallet</h3>
+                    <div class="wallet-amount">1,250 MZLx</div>
+                    <div class="wallet-actions">
+                        <button class="action-btn">Send</button>
+                        <button class="action-btn">Receive</button>
+                    </div>
+                </div>
+                <div class="wallet-card">
+                    <div class="wallet-icon">
+                        <i class="fab fa-usd"></i>
+                    </div>
+                    <h3>USDT Wallet</h3>
+                    <div class="wallet-amount">350 USDT</div>
+                    <div class="wallet-actions">
+                        <button class="action-btn">Send</button>
+                        <button class="action-btn">Receive</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-card voting-section">
+            <div class="card-header">
+                <h3><i class="fas fa-vote-yea"></i> Daily Price Voting</h3>
+                <div class="voting-timer">
+                    Next voting: Today 6:00 PM - 11:00 PM (WAT)
+                </div>
+            </div>
+            <p>As a Gold or Platinum member, vote daily to determine the next day's token price. Voting results published at 11:30 PM.</p>
+            
+            <div style="max-width: 500px; margin: 30px auto; background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 15px;">
+                <h4>Proposed Price Increase</h4>
+                <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
+                    <button class="vote-btn">-0.5%</button>
+                    <div style="font-size: 2rem; margin: 0 15px;">+2.75%</div>
+                    <button class="vote-btn">+0.5%</button>
+                </div>
+                <div style="margin: 20px 0;">
+                    <input type="range" min="1" max="500" value="275" style="width: 100%;">
+                </div>
+                <button class="btn" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                    <i class="fas fa-paper-plane"></i> Submit Your Vote
+                </button>
+            </div>
+        </section>
+
+        <section class="referral-section">
+            <div class="card-header">
+                <h3><i class="fas fa-users"></i> MLM Referral Program</h3>
+            </div>
+            <p>Earn 2.5% at each of 5 levels for every referral's token purchase and Platinum membership registration.</p>
+            <div class="referral-id">Your ID: MSLP-7241986</div>
+            
+            <div class="referral-stats">
+                <div class="referral-stat">
+                    <div>Level 1</div>
+                    <div class="stat-value">8</div>
+                    <div>Referrals</div>
+                </div>
+                <div class="referral-stat">
+                    <div>Level 2</div>
+                    <div class="stat-value">24</div>
+                    <div>Referrals</div>
+                </div>
+                <div class="referral-stat">
+                    <div>Level 3</div>
+                    <div class="stat-value">72</div>
+                    <div>Referrals</div>
+                </div>
+                <div class="referral-stat">
+                    <div>Level 4</div>
+                    <div class="stat-value">216</div>
+                    <div>Referrals</div>
+                </div>
+                <div class="referral-stat">
+                    <div>Total Earnings</div>
+                    <div class="stat-value">₦42,500</div>
+                    <div>+ 850 MZLx</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 25px;">
+                <button class="btn btn-outline" style="margin-right: 10px;">
+                    <i class="fas fa-share-alt"></i> Invite Friends
+                </button>
+                <button class="btn">
+                    <i class="fas fa-history"></i> Earnings History
+                </button>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2023 MASOLITES ECOMAS - MAZOL Token Ecosystem. All rights reserved.</p>
+            <p>Secure, decentralized, and community-driven token platform</p>
+        </footer>
+    </div>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const days = document.querySelector('.countdown-value:nth-child(1)');
+            const hours = document.querySelector('.countdown-value:nth-child(2)');
+            const minutes = document.querySelector('.countdown-value:nth-child(3)');
+            const seconds = document.querySelector('.countdown-value:nth-child(4)');
+            
+            // This would be replaced with actual countdown logic
+            days.textContent = '120';
+            hours.textContent = '23';
+            minutes.textContent = '45';
+            seconds.textContent = '18';
+        }
+        
+        // Mining Session Timer
+        function updateMiningTimer() {
+            const timer = document.querySelector('.dashboard-card:nth-child(3) .price-value');
+            // This would be replaced with actual timer logic
+            timer.textContent = '00:23:17:45';
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCountdown();
+            updateMiningTimer();
+            
+            // Update timers every second
+            setInterval(updateCountdown, 1000);
+            setInterval(updateMiningTimer, 1000);
+            
+            // Wallet connection
+            const walletBtn = document.querySelector('.wallet-btn');
+            walletBtn.addEventListener('click', function() {
+                alert('MetaMask wallet connection initiated. Please check your MetaMask extension.');
+            });
+            
+            // Voting controls
+            const voteBtns = document.querySelectorAll('.vote-btn');
+            voteBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const current = document.querySelector('.voting-section .price-value');
+                    const value = parseFloat(current.textContent);
+                    if(this.textContent.includes('-')) {
+                        current.textContent = (value - 0.5).toFixed(2) + '%';
+                    } else {
+                        current.textContent = (value + 0.5).toFixed(2) + '%';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
