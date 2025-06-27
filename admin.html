@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOMAS Admin Panel</title>
+    <script src="https://unpkg.com/mongodb@4.5/dist/mongodb.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4361ee;
+        }
+        .login-section {
+            max-width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+        .admin-panel {
+            display: none;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4361ee;
+            color: white;
+        }
+        input[type="password"], input[type="number"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #4361ee;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #3f37c9;
+        }
+        .btn-approve {
+            background-color: #2a9d8f;
+        }
+        .btn-reject {
+            background-color: #e63946;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ECOMAS Admin Panel</h1>
+    </header>
+
+    <div id="loginSection" class="login-section">
+        <h2>Admin Login</h2>
+        <input type="password" id="adminPin" placeholder="Enter Admin PIN">
+        <button id="loginBtn">Login</button>
+        <p id="loginError" style="color: red; display: none;">Invalid PIN</p>
+    </div>
+
+    <div id="adminPanel" class="admin-panel">
+        <!-- Pending Deposits -->
+        <div class="card">
+            <h2>Pending Deposits</h2>
+            <table id="depositsTable">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Amount</th>
+                        <th>Currency</th>
+                        <th>Reference</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <!-- Token Management -->
+        <div class="card">
+            <h2>Token Management</h2>
+            <div>
+                <h3>Burn Tokens</h3>
+                <input type="number" id="burnAmount" placeholder="Amount to burn">
+                <button id="burnBtn">Burn Tokens</button>
+            </div>
+            <div style="margin-top: 20px;">
+                <h3>Mint Tokens</h3>
+                <input type="number" id="mintAmount" placeholder="Amount to mint">
+                <button id="mintBtn">Mint Tokens</button>
+            </div>
+        </div>
+
+        <!-- Token Price Management -->
+        <div class="card">
+            <h2>Token Price</h2>
+            <div>Current Price: $<span id="adminTokenPrice">0.001</span></div>
+            <button id="updatePriceBtn">Update Price from Votes</button>
+        </div>
+
+        <!-- Escrow Disputes -->
+        <div class="card">
+            <h2>Escrow Disputes</h2>
+            <table id="disputesTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Sender</th>
+                        <th>Recipient</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Configuration - Replace with your MongoDB URI
+        const MONGODB_URI = "mongodb+srv://masolites:YOUR_PASSWORD@ecomas.jrnvjrb.mongodb.net/ECOM?retryWrites=true&w=majority&appName=ECOMAS";
+        const ADMIN_PIN = "1474";
+        let db;
+
+        // Initialize
+        async function init() {
+            // Set up login button
+            document.getElementById('loginBtn').addEventListener('click', login);
+            
+            // Set up admin buttons
+            document.getElementById('burnBtn').addEventListener('click', burnTokens);
+            document.getElementById('mintBtn').addEventListener('click', mintTokens);
+            document.getElementById('updatePriceBtn').addEventListener('click', updateTokenPrice);
+        }
+
+        // Login function
+        async function login() {
+            const pin = document.getElementById('adminPin').value;
+            const errorElement = document.getElementById('loginError');
+            
+            if (pin === ADMIN_PIN) {
+                // Connect to MongoDB
+                const client = new MongoClient(MONGODB_URI);
+                await client.connect();
+                db = client.db("ECOM");
+                
+                // Show admin panel
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                
+                // Load admin data
+                loadPendingDeposits();
+                loadTokenPrice();
+                loadEscrowDisputes();
+            } else {
+                errorElement.style.display = 'block';
+            }
+        }
+
+        // Load pending deposits
+        async function loadPendingDeposits() {
+            const deposits = await db.collection("deposits").find({ status: "pending" }).toArray();
+            const tableBody = document.getElementById('depositsTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            
+            deposits.forEach(deposit => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = deposit.userId.substring(0, 10) + '...';
+                row.insertCell(1).textContent = deposit.amount;
+                row.insertCell(2).textContent = deposit.currency;
+                row.insertCell(3).textContent = deposit.reference || 'N/A';
+                row.insertCell(4).textContent = new Date(deposit.timestamp).toLocaleDateString();
+                
+                const actionCell = row.insertCell(5);
+                const approveBtn = document.createElement('button');
+                approveBtn.textContent = 'Approve';
+                approveBtn.className = 'btn-approve';
+                approveBtn.onclick = () => approveDeposit(deposit._id);
+                
+                const rejectBtn = document.createElement('button');
+                rejectBtn.textContent = 'Reject';
+                rejectBtn.className = 'btn-reject';
+                rejectBtn.style.marginLeft = '10px';
+                rejectBtn.onclick = () => rejectDeposit(deposit._id);
+                
+                actionCell.appendChild(approveBtn);
+                actionCell.appendChild(rejectBtn);
+            });
+        }
+
+        // Approve deposit
+        async function approveDeposit(depositId) {
+            // Get deposit
+            const deposit = await db.collection("deposits").findOne({ _id: depositId });
+            
+            // Update status
+            await db.collection("deposits").updateOne(
+                { _id: depositId },
+                { $set: { status: "approved", approvedAt: new Date() } }
+            );
+            
+            // Credit user account
+            await db.collection("wallets").updateOne(
+                { userId: deposit.userId },
+                { $inc: { [deposit.currency]: deposit.amount } },
+                { upsert: true }
+            );
+            
+            loadPendingDeposits();
+            alert("Deposit approved and user credited!");
+        }
+
+        // Reject deposit
+        async function rejectDeposit(depositId) {
+            await db.collection("deposits").updateOne(
+                { _id: depositId },
+                { $set: { status: "rejected", rejectedAt: new Date() } }
+            );
+            loadPendingDeposits();
+            alert("Deposit rejected!");
+        }
+
+        // Burn tokens
+        async function burnTokens() {
+            const amount = parseFloat(document.getElementById('burnAmount').value);
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount");
+                return;
+            }
+            
+            // Record burn transaction
+            await db.collection("burns").insertOne({
+                amount,
+                timestamp: new Date()
+            });
+            
+            alert(`${amount} tokens burned successfully!`);
+        }
+
+        // Mint tokens
+        async function mintTokens() {
+            const amount = parseFloat(document.getElementById('mintAmount').value);
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount");
+                return;
+            }
+            
+            // Record mint transaction
+            await db.collection("mints").insertOne({
+                amount,
+                timestamp: new Date()
+            });
+            
+            alert(`${amount} tokens minted successfully!`);
+        }
+
+        // Update token price from votes
+        async function updateTokenPrice() {
+            // Get all votes from the last voting session
+            const oneDayAgo = new Date();
+            oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+            
+            const votes = await db.collection("votes")
+                .find({ timestamp: { $gte: oneDayAgo } })
+                .toArray();
+            
+            if (votes.length === 0) {
+                alert("No votes found in the last 24 hours");
+                return;
+            }
+            
+            // Calculate average price
+            const total = votes.reduce((sum, vote) => sum + vote.price, 0);
+            const averagePrice = total / votes.length;
+            
+            // Ensure price is within range
+            const finalPrice = Math.min(Math.max(averagePrice, 0.4), 3.0);
+            
+            // Update price display
+            document.getElementById('adminTokenPrice').textContent = finalPrice.toFixed(4);
+            
+            // Save to database
+            await db.collection("token_prices").insertOne({
+                price: finalPrice,
+                effectiveDate: new Date(),
+                voteCount: votes.length
+            });
+            
+            alert(`Token price updated to $${finalPrice.toFixed(4)}`);
+        }
+
+        // Load current token price
+        async function loadTokenPrice() {
+            const latestPrice = await db.collection("token_prices")
+                .find()
+                .sort({ effectiveDate: -1 })
+                .limit(1)
+                .toArray();
+            
+            if (latestPrice.length > 0) {
+                document.getElementById('adminTokenPrice').textContent = 
+                    latestPrice[0].price.toFixed(4);
+            }
+        }
+
+        // Load escrow disputes
+        async function loadEscrowDisputes() {
+            const disputes = await db.collection("escrows")
+                .find({ status: "disputed" })
+                .toArray();
+            
+            const tableBody = document.getElementById('disputesTable').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';
+            
+            disputes.forEach(escrow => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = escrow._id.substring(0, 8);
+                row.insertCell(1).textContent = escrow.sender.substring(0, 10) + '...';
+                row.insertCell(2).textContent = escrow.recipient.substring(0, 10) + '...';
+                row.insertCell(3).textContent = escrow.amount;
+                
+                const actionCell = row.insertCell(4);
+                const senderBtn = document.createElement('button');
+                senderBtn.textContent = 'Award to Sender';
+                senderBtn.className = 'btn-approve';
+                senderBtn.onclick = () => resolveDispute(escrow._id, escrow.sender);
+                
+                const recipientBtn = document.createElement('button');
+                recipientBtn.textContent = 'Award to Recipient';
+                recipientBtn.className = 'btn-approve';
+                recipientBtn.style.marginLeft = '5px';
+                recipientBtn.onclick = () => resolveDispute(escrow._id, escrow.recipient);
+                
+                actionCell.appendChild(senderBtn);
+                actionCell.appendChild(recipientBtn);
+            });
+        }
+        
+        async function resolveDispute(escrowId, winner) {
+            // Update escrow status
+            await db.collection("escrows").updateOne(
+                { _id: escrowId },
+                { $set: { status: "resolved", winner } }
+            );
+            
+            // In real app, transfer tokens to winner
+            alert(`Dispute resolved! Funds awarded to ${winner.substring(0,10)}...`);
+            loadEscrowDisputes();
+        }
+
+        // Initialize the admin panel
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
