@@ -3,798 +3,890 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MASOLITES ECOMAS | MAZOL Token ICO</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <title>ECOMAS - Social Crypto Platform</title>
+    <script src="https://unpkg.com/@thirdweb-dev/sdk@3"></script>
+    <script src="https://unpkg.com/mongodb@4.5/dist/mongodb.js"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <style>
         :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --text: #f1f1f1;
-            --gold: #ffd700;
-            --silver: #c0c0c0;
-            --platinum: #e5e4e2;
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --dark: #1d3557;
         }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: var(--text);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(233, 69, 96, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(21, 33, 62, 0.2) 0%, transparent 20%);
-            z-index: -1;
-        }
-        
-        .container {
-            max-width: 1200px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f8f9fa;
+            color: #333;
         }
-        
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary);
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
         }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--highlight), var(--gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .subtitle {
+            color: var(--secondary);
+            font-style: italic;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: var(--secondary);
+        }
+        .miner-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
             margin-left: 10px;
         }
-        
-        .logo-icon {
-            background: linear-gradient(135deg, var(--accent), var(--highlight));
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+        .silver {
+            background-color: #c0c0c0;
+            color: #333;
         }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
+        .gold {
+            background-color: #ffd700;
+            color: #333;
         }
-        
-        nav li {
-            margin: 0 15px;
-        }
-        
-        nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 8px 15px;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-        }
-        
-        nav a:hover, nav a.active {
-            background: rgba(233, 69, 96, 0.2);
-        }
-        
-        .wallet-connect {
-            display: flex;
-            align-items: center;
-        }
-        
-        .wallet-btn {
-            background: linear-gradient(90deg, var(--accent), var(--highlight));
+        .power {
+            background-color: #4361ee;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
         }
-        
-        .wallet-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
-        }
-        
-        .wallet-btn i {
-            margin-right: 8px;
-        }
-        
-        .wallet-info {
-            margin-left: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-        }
-        
-        .hero {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 50px 0;
-        }
-        
-        .hero-content {
-            flex: 1;
-            padding-right: 40px;
-        }
-        
-        .hero-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            line-height: 1.3;
-        }
-        
-        .hero-content p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-            line-height: 1.6;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: linear-gradient(90deg, var(--accent), var(--highlight));
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-right: 15px;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--highlight);
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
-        }
-        
-        .hero-image {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
-        
-        .dashboard-card {
-            background: rgba(26, 26, 46, 0.7);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .card-header h3 {
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-header h3 i {
-            margin-right: 10px;
-            color: var(--highlight);
-        }
-        
-        .countdown {
-            display: flex;
-            justify-content: space-between;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .countdown-box {
-            background: rgba(15, 52, 96, 0.5);
-            border-radius: 10px;
-            padding: 15px;
-            flex: 1;
-            margin: 0 10px;
-        }
-        
-        .countdown-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--highlight);
-        }
-        
-        .countdown-label {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            text-transform: uppercase;
-        }
-        
-        .price-display {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-        
-        .price-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gold);
-            margin: 0 10px;
-        }
-        
-        .mining-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .mining-card {
-            background: rgba(15, 52, 96, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .mining-card:hover {
-            transform: translateY(-5px);
-            background: rgba(15, 52, 96, 0.5);
-        }
-        
-        .mining-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .silver .mining-icon {
-            color: var(--silver);
-        }
-        
-        .gold .mining-icon {
-            color: var(--gold);
-        }
-        
-        .platinum .mining-icon {
-            color: var(--platinum);
-        }
-        
-        .mining-title {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
-        
-        .mining-speed {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: var(--highlight);
-        }
-        
-        .mining-btn {
-            background: rgba(233, 69, 96, 0.2);
-            border: none;
-            color: var(--text);
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        
-        .mining-btn:hover {
-            background: rgba(233, 69, 96, 0.4);
-        }
-        
-        .wallet-section {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .wallet-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .wallet-icon {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: var(--highlight);
-        }
-        
-        .wallet-amount {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .wallet-actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .action-btn {
-            background: rgba(233, 69, 96, 0.2);
-            border: none;
-            color: var(--text);
-            padding: 8px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .action-btn:hover {
-            background: rgba(233, 69, 96, 0.4);
-        }
-        
-        .voting-section {
-            text-align: center;
-        }
-        
-        .voting-timer {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-            background: rgba(233, 69, 96, 0.2);
+        input, select, textarea {
             padding: 10px;
-            border-radius: 10px;
-            display: inline-block;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 100%;
+            margin-bottom: 10px;
         }
-        
-        .voting-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .vote-btn {
-            background: rgba(15, 52, 96, 0.5);
-            border: 2px solid var(--highlight);
-            color: var(--text);
-            padding: 10px 25px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 1.1rem;
-        }
-        
-        .vote-btn:hover {
-            background: var(--highlight);
-        }
-        
-        .referral-section {
-            background: rgba(15, 52, 96, 0.3);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-        }
-        
-        .referral-id {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 12px 20px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: inline-block;
-            margin: 15px 0;
-            color: var(--platinum);
-        }
-        
-        .referral-stats {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .referral-stat {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--gold);
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin: 10px 0;
         }
-        
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.7;
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
         }
-        
-        @media (max-width: 768px) {
-            .mining-section, .wallet-section, .referral-stats {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero {
-                flex-direction: column;
-            }
-            
-            .hero-content {
-                padding-right: 0;
-                margin-bottom: 40px;
-            }
-            
-            nav ul {
-                display: none;
-            }
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-coins"></i>
-                </div>
-                <h1>MASOLITES ECOMAS</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#" class="active">Dashboard</a></li>
-                    <li><a href="#">ICO</a></li>
-                    <li><a href="#">Mining</a></li>
-                    <li><a href="#">Voting</a></li>
-                    <li><a href="#">Escrow</a></li>
-                </ul>
-            </nav>
-            <div class="wallet-connect">
-                <div class="wallet-info">
-                    <i class="fas fa-wallet"></i> NGN 15,000 | 1,250 MZLx | 350 USDT
-                </div>
-                <button class="wallet-btn">
-                    <i class="fab fa-metamask"></i> Connect Wallet
-                </button>
-            </div>
-        </header>
+    <header>
+        <h1>ECOMAS</h1>
+        <div class="subtitle">Socials powered by MAZOL</div>
+    </header>
 
-        <section class="hero">
-            <div class="hero-content">
-                <h2>MAZOL Token Private Sale ICO</h2>
-                <p>Join the revolutionary MAZOL token ecosystem. Participate in our private sale, mine tokens at unprecedented speeds, and help shape the token's future through our unique voting system.</p>
-                <p>Starting price: <span class="price-value">$0.001</span> per MZLx token</p>
-                <div>
-                    <button class="btn">Buy MAZOL Tokens</button>
-                    <button class="btn btn-outline">Learn More</button>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="dashboard-card" style="width: 100%; max-width: 400px;">
-                    <h3><i class="fas fa-chart-line"></i> Token Metrics</h3>
-                    <div style="margin: 20px 0;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Total Supply:</span>
-                            <span>100,000,000 MZLx</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Private Sale:</span>
-                            <span>40,000,000 MZLx</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Mining Reserve:</span>
-                            <span>30,000,000 MZLx</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                            <span>Current Price:</span>
-                            <span>$0.001</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <!-- Wallet Connection -->
+    <div class="card">
+        <button id="connectWalletBtn">Connect Wallet</button>
+        <div id="walletStatus">Not connected</div>
+        <div id="minerStatus" class="miner-badge silver">🥈 Silver Miner</div>
+    </div>
 
-        <section class="dashboard-card">
-            <div class="card-header">
-                <h3><i class="fas fa-fire"></i> Private Sale Countdown</h3>
-                <div class="price-display">
-                    Current Price: <span class="price-value">$0.001</span> (₦0.78)
-                </div>
-            </div>
-            <div class="countdown">
-                <div class="countdown-box">
-                    <div class="countdown-value">120</div>
-                    <div class="countdown-label">Days</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-value">23</div>
-                    <div class="countdown-label">Hours</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-value">45</div>
-                    <div class="countdown-label">Minutes</div>
-                </div>
-                <div class="countdown-box">
-                    <div class="countdown-value">18</div>
-                    <div class="countdown-label">Seconds</div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn" style="padding: 15px 40px; font-size: 1.1rem;">
-                    <i class="fas fa-shopping-cart"></i> Buy MAZOL Tokens
-                </button>
-            </div>
-        </section>
+    <!-- Mining Dashboard -->
+    <div class="card">
+        <h2>Mining Dashboard</h2>
+        <div class="mining-stats">
+            <div>Mining Rate: <span id="miningRate">0.01</span> MZLx/min</div>
+            <div>Mined Tokens: <span id="minedTokens">0.00</span> MZLx</div>
+            <div>Token Balance: <span id="tokenBalance">0.00</span> MZLx</div>
+        </div>
+        <button id="upgradeBtn">Upgrade to Gold Miner</button>
+    </div>
 
-        <section class="dashboard-card">
-            <div class="card-header">
-                <h3><i class="fas fa-hard-hat"></i> Token Mining</h3>
-                <div class="price-display">
-                    Mining Balance: <span class="price-value">1,250 MZLx</span>
-                </div>
-            </div>
-            <div class="mining-section">
-                <div class="mining-card silver">
-                    <div class="mining-icon">
-                        <i class="fas fa-medal"></i>
-                    </div>
-                    <h3 class="mining-title">Silver Mining</h3>
-                    <div class="mining-speed">Speed: 1x</div>
-                    <p>Basic mining for all registered users. Earn tokens by keeping the mining session active.</p>
-                    <button class="mining-btn">Start Silver Mining</button>
-                </div>
-                <div class="mining-card gold">
-                    <div class="mining-icon">
-                        <i class="fas fa-crown"></i>
-                    </div>
-                    <h3 class="mining-title">Gold Mining</h3>
-                    <div class="mining-speed">Speed: 4x</div>
-                    <p>For users who purchase at least ₦100 of MZLx tokens. Enjoy 4x mining speed!</p>
-                    <button class="mining-btn">Start Gold Mining</button>
-                </div>
-                <div class="mining-card platinum">
-                    <div class="mining-icon">
-                        <i class="fas fa-gem"></i>
-                    </div>
-                    <h3 class="mining-title">Platinum Mining</h3>
-                    <div class="mining-speed">Speed: 7x</div>
-                    <p>One-time registration fee of ₦1,000. Enjoy 7x mining speed and 10% crypto rewards!</p>
-                    <button class="mining-btn">Upgrade to Platinum</button>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 20px; background: rgba(15, 52, 96, 0.3); padding: 15px; border-radius: 10px;">
-                <h4><i class="fas fa-tachometer-alt"></i> Mining Session</h4>
-                <div style="font-size: 1.8rem; font-weight: 700; margin: 10px 0; color: var(--highlight);">00:23:17:45</div>
-                <div style="display: flex; justify-content: center; gap: 10px;">
-                    <button class="action-btn">Pause</button>
-                    <button class="action-btn">Stop</button>
-                </div>
-            </div>
-        </section>
+    <!-- ICO Countdown -->
+    <div class="card">
+        <h2>Private Sale ICO</h2>
+        <div id="countdown">120 days 00:00:00</div>
+        <button id="icoBtn">Participate in ICO</button>
+    </div>
 
-        <section class="dashboard-card">
-            <div class="card-header">
-                <h3><i class="fas fa-wallet"></i> Wallet Balances</h3>
-                <div>
-                    <button class="action-btn"><i class="fas fa-plus"></i> Deposit</button>
-                    <button class="action-btn"><i class="fas fa-exchange-alt"></i> Transfer</button>
-                </div>
-            </div>
-            <div class="wallet-section">
-                <div class="wallet-card">
-                    <div class="wallet-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Cash Wallet</h3>
-                    <div class="wallet-amount">₦15,000</div>
-                    <div class="wallet-actions">
-                        <button class="action-btn">Deposit</button>
-                        <button class="action-btn">Withdraw</button>
-                    </div>
-                </div>
-                <div class="wallet-card">
-                    <div class="wallet-icon">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <h3>MAZOL Wallet</h3>
-                    <div class="wallet-amount">1,250 MZLx</div>
-                    <div class="wallet-actions">
-                        <button class="action-btn">Send</button>
-                        <button class="action-btn">Receive</button>
-                    </div>
-                </div>
-                <div class="wallet-card">
-                    <div class="wallet-icon">
-                        <i class="fab fa-usd"></i>
-                    </div>
-                    <h3>USDT Wallet</h3>
-                    <div class="wallet-amount">350 USDT</div>
-                    <div class="wallet-actions">
-                        <button class="action-btn">Send</button>
-                        <button class="action-btn">Receive</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="dashboard-card voting-section">
-            <div class="card-header">
-                <h3><i class="fas fa-vote-yea"></i> Daily Price Voting</h3>
-                <div class="voting-timer">
-                    Next voting: Today 6:00 PM - 11:00 PM (WAT)
-                </div>
-            </div>
-            <p>As a Gold or Platinum member, vote daily to determine the next day's token price. Voting results published at 11:30 PM.</p>
+    <!-- Token Swap -->
+    <div class="card">
+        <h2>Token Swap</h2>
+        <div class="swap-container">
+            <select id="fromToken">
+                <option value="MZLx">MZLx</option>
+                <option value="USDT">USDT</option>
+                <option value="NGN">NGN</option>
+            </select>
+            <input type="number" id="fromAmount" placeholder="Amount">
             
-            <div style="max-width: 500px; margin: 30px auto; background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 15px;">
-                <h4>Proposed Price Increase</h4>
-                <div style="display: flex; justify-content: center; align-items: center; margin: 20px 0;">
-                    <button class="vote-btn">-0.5%</button>
-                    <div style="font-size: 2rem; margin: 0 15px;">+2.75%</div>
-                    <button class="vote-btn">+0.5%</button>
-                </div>
-                <div style="margin: 20px 0;">
-                    <input type="range" min="1" max="500" value="275" style="width: 100%;">
-                </div>
-                <button class="btn" style="width: 100%; padding: 15px; font-size: 1.1rem;">
-                    <i class="fas fa-paper-plane"></i> Submit Your Vote
-                </button>
-            </div>
-        </section>
+            <select id="toToken">
+                <option value="USDT">USDT</option>
+                <option value="MZLx">MZLx</option>
+                <option value="NGN">NGN</option>
+            </select>
+            <input type="text" id="toAmount" placeholder="Result" readonly>
+        </div>
+        <button id="swapBtn">Swap Tokens</button>
+    </div>
 
-        <section class="referral-section">
-            <div class="card-header">
-                <h3><i class="fas fa-users"></i> MLM Referral Program</h3>
-            </div>
-            <p>Earn 2.5% at each of 5 levels for every referral's token purchase and Platinum membership registration.</p>
-            <div class="referral-id">Your ID: MSLP-7241986</div>
-            
-            <div class="referral-stats">
-                <div class="referral-stat">
-                    <div>Level 1</div>
-                    <div class="stat-value">8</div>
-                    <div>Referrals</div>
-                </div>
-                <div class="referral-stat">
-                    <div>Level 2</div>
-                    <div class="stat-value">24</div>
-                    <div>Referrals</div>
-                </div>
-                <div class="referral-stat">
-                    <div>Level 3</div>
-                    <div class="stat-value">72</div>
-                    <div>Referrals</div>
-                </div>
-                <div class="referral-stat">
-                    <div>Level 4</div>
-                    <div class="stat-value">216</div>
-                    <div>Referrals</div>
-                </div>
-                <div class="referral-stat">
-                    <div>Total Earnings</div>
-                    <div class="stat-value">₦42,500</div>
-                    <div>+ 850 MZLx</div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 25px;">
-                <button class="btn btn-outline" style="margin-right: 10px;">
-                    <i class="fas fa-share-alt"></i> Invite Friends
-                </button>
-                <button class="btn">
-                    <i class="fas fa-history"></i> Earnings History
-                </button>
-            </div>
-        </section>
+    <!-- Voting Section -->
+    <div class="card">
+        <h2>Token Price Voting</h2>
+        <div>Current Price: $<span id="currentPrice">0.001</span></div>
+        <input type="range" id="priceSlider" min="0.4" max="3.0" step="0.01" value="0.4">
+        <div>Proposed Price: $<span id="proposedPrice">0.40</span></div>
+        <button id="voteBtn">Submit Vote</button>
+        <div id="votingStatus">Voting closed. Opens 6-11:30 PM WAT</div>
+    </div>
+
+    <!-- Deposit Section -->
+    <div class="card">
+        <h2>Deposit Funds</h2>
+        <div>
+            <label>Amount (NGN):</label>
+            <input type="number" id="depositAmount" min="1000" value="1000">
+        </div>
+        <div>
+            <label>Payment Method:</label>
+            <select id="paymentMethod">
+                <option value="bank_transfer">Bank Transfer</option>
+                <option value="card">Card Payment</option>
+            </select>
+        </div>
+        <button id="depositBtn">Deposit Funds</button>
+        <div id="manualDeposit" class="hidden">
+            <p>Make transfer to:</p>
+            <p>Bank: ECOMAS Bank</p>
+            <p>Account: 1234567890</p>
+            <p>Reference: <span id="refNumber"></span></p>
+            <button id="confirmDeposit">Confirm Deposit</button>
+        </div>
+    </div>
+
+    <!-- Voice Chat Feature -->
+    <div class="card">
+        <h2>Voice Messages</h2>
+        <button id="recordBtn">Start Recording</button>
+        <button id="stopBtn" disabled>Stop Recording</button>
+        <audio id="audioPlayback" controls class="hidden"></audio>
+        <div id="vulgarWarning" style="color:red; display:none;">Warning: Vulgar language detected!</div>
         
-        <footer>
-            <p>© 2023 MASOLITES ECOMAS - MAZOL Token Ecosystem. All rights reserved.</p>
-            <p>Secure, decentralized, and community-driven token platform</p>
-        </footer>
+        <div style="margin-top:15px;">
+            <input type="text" id="messageRecipient" placeholder="Recipient Address">
+            <button id="sendVoiceBtn">Send Voice Message</button>
+        </div>
+    </div>
+
+    <!-- Affiliate Program -->
+    <div class="card">
+        <h2>Affiliate Program</h2>
+        <div>Your Referral Code: <strong id="referralCode"></strong></div>
+        <div>Share this link: <span id="referralLink"></span></div>
+        
+        <div style="margin-top:15px;">
+            <h3>Your Downline</h3>
+            <ul id="downlineList"></ul>
+        </div>
+    </div>
+
+    <!-- Escrow System -->
+    <div class="card">
+        <h2>Escrow Transactions</h2>
+        <div>
+            <h3>Create Escrow</h3>
+            <input type="text" id="escrowRecipient" placeholder="Recipient Address">
+            <input type="number" id="escrowAmount" placeholder="Amount (MZLx)">
+            <textarea id="escrowTerms" placeholder="Transaction terms"></textarea>
+            <button id="createEscrowBtn">Create Escrow</button>
+        </div>
+        
+        <div style="margin-top:15px;">
+            <h3>Your Escrows</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recipient</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="escrowList"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PIN Protection -->
+    <div class="card" id="pinSection">
+        <h2>Wallet Security</h2>
+        <div>Set up a 4-digit PIN</div>
+        <input type="password" id="pinInput" maxlength="4" placeholder="0000">
+        <button id="setPinBtn">Set PIN</button>
+        <button id="lockWalletBtn">Lock Wallet</button>
+    </div>
+
+    <!-- Power Member Registration -->
+    <div class="card">
+        <h2>Power Member Upgrade</h2>
+        <p>Pay ₦1000 to become a Power Member and get:</p>
+        <ul>
+            <li>2.5% bonus in MZLx tokens</li>
+            <li>Higher mining rates</li>
+            <li>Priority support</li>
+        </ul>
+        <button id="upgradePowerBtn">Become Power Member</button>
     </div>
 
     <script>
-        // Countdown Timer
-        function updateCountdown() {
-            const days = document.querySelector('.countdown-value:nth-child(1)');
-            const hours = document.querySelector('.countdown-value:nth-child(2)');
-            const minutes = document.querySelector('.countdown-value:nth-child(3)');
-            const seconds = document.querySelector('.countdown-value:nth-child(4)');
+        // =====================
+        // CONFIGURATION - REPLACE THESE VALUES
+        // =====================
+        const MAZOL_CONTRACT_ADDRESS = "0x49F4a728BD98480E92dBfc6a82d595DA9d1F7b83";
+        const MONGODB_URI = "mongodb+srv://masolites:YOUR_PASSWORD@ecomas.jrnvjrb.mongodb.net/ECOM?retryWrites=true&w=majority&appName=ECOMAS";
+        const FLW_PUBLIC_KEY = "YOUR_FLUTTERWAVE_PUBLIC_KEY";
+        const ADMIN_PIN = "1474";
+        
+        // =====================
+        // INITIALIZATION
+        // =====================
+        const sdk = new ThirdwebSDK("binance");
+        let mazolContract;
+        let userAddress = "";
+        let miningInterval;
+        let db;
+        let mediaRecorder;
+        let audioChunks = [];
+        const VULGAR_WORDS = ["fuck", "shit", "asshole", "bitch"]; // Add your list
+
+        async function init() {
+            // Connect to MongoDB
+            const client = new MongoClient(MONGODB_URI);
+            await client.connect();
+            db = client.db("ECOM");
+            console.log("Connected to MongoDB");
             
-            // This would be replaced with actual countdown logic
-            days.textContent = '120';
-            hours.textContent = '23';
-            minutes.textContent = '45';
-            seconds.textContent = '18';
+            // Initialize contract
+            mazolContract = await sdk.getContract(MAZOL_CONTRACT_ADDRESS);
+            
+            // Set up wallet connection
+            document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
+            
+            // Set up other event listeners
+            document.getElementById('upgradeBtn').addEventListener('click', upgradeToGold);
+            document.getElementById('icoBtn').addEventListener('click', participateICO);
+            document.getElementById('swapBtn').addEventListener('click', swapTokens);
+            document.getElementById('voteBtn').addEventListener('click', submitVote);
+            document.getElementById('priceSlider').addEventListener('input', updateProposedPrice);
+            document.getElementById('depositBtn').addEventListener('click', processDeposit);
+            document.getElementById('confirmDeposit').addEventListener('click', confirmManualDeposit);
+            document.getElementById('recordBtn').addEventListener('click', startRecording);
+            document.getElementById('stopBtn').addEventListener('click', stopRecording);
+            document.getElementById('sendVoiceBtn').addEventListener('click', sendVoiceMessage);
+            document.getElementById('createEscrowBtn').addEventListener('click', createEscrow);
+            document.getElementById('setPinBtn').addEventListener('click', setPin);
+            document.getElementById('lockWalletBtn').addEventListener('click', lockWallet);
+            document.getElementById('upgradePowerBtn').addEventListener('click', upgradeToPowerMember);
+            
+            // Initialize countdown
+            startCountdown(120); // 120 days countdown
+            
+            // Initialize voting status
+            checkVotingStatus();
+        }
+
+        // =====================
+        // WALLET CONNECTION
+        // =====================
+        async function connectWallet() {
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                userAddress = accounts[0];
+                document.getElementById('walletStatus').textContent = `Connected: ${userAddress.substring(0,6)}...${userAddress.substring(userAddress.length-4)}`;
+                
+                // Save/load user data
+                const user = await loadUserData();
+                
+                // Start mining
+                startMining(user);
+                
+                // Update UI
+                updateUI(user);
+                
+                // Load additional data
+                loadEscrows();
+                initAffiliate(user);
+            } catch (error) {
+                console.error("Wallet connection failed:", error);
+                document.getElementById('walletStatus').textContent = "Connection failed";
+            }
+        }
+
+        // =====================
+        // USER MANAGEMENT
+        // =====================
+        async function loadUserData() {
+            let user = await db.collection("users").findOne({ address: userAddress });
+            
+            if (!user) {
+                // Create new user
+                user = {
+                    address: userAddress,
+                    minerStatus: "silver",
+                    joinedAt: new Date(),
+                    referralCode: generateReferralCode(),
+                    affiliateRewards: 0,
+                    isPowerMember: false
+                };
+                await db.collection("users").insertOne(user);
+            }
+            
+            return user;
         }
         
-        // Mining Session Timer
-        function updateMiningTimer() {
-            const timer = document.querySelector('.dashboard-card:nth-child(3) .price-value');
-            // This would be replaced with actual timer logic
-            timer.textContent = '00:23:17:45';
+        function generateReferralCode() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
         }
         
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            updateCountdown();
-            updateMiningTimer();
+        function updateUI(user) {
+            // Update miner status
+            const minerStatus = document.getElementById('minerStatus');
+            minerStatus.textContent = user.isPowerMember ? "💎 Power Member" : 
+                                    user.minerStatus === "gold" ? "🥇 Gold Miner" : "🥈 Silver Miner";
+            minerStatus.className = "miner-badge " + 
+                (user.isPowerMember ? "power" : user.minerStatus === "gold" ? "gold" : "silver");
             
-            // Update timers every second
-            setInterval(updateCountdown, 1000);
-            setInterval(updateMiningTimer, 1000);
+            // Update mining rate
+            document.getElementById('miningRate').textContent = 
+                user.isPowerMember ? "0.075" : user.minerStatus === "gold" ? "0.05" : "0.01";
             
-            // Wallet connection
-            const walletBtn = document.querySelector('.wallet-btn');
-            walletBtn.addEventListener('click', function() {
-                alert('MetaMask wallet connection initiated. Please check your MetaMask extension.');
+            // Update referral link
+            document.getElementById('referralCode').textContent = user.referralCode;
+            document.getElementById('referralLink').textContent = 
+                `https://masolites.github.io/ecom?ref=${user.referralCode}`;
+        }
+
+        // =====================
+        // MINING SYSTEM
+        // =====================
+        function startMining(user) {
+            if (miningInterval) clearInterval(miningInterval);
+            
+            miningInterval = setInterval(async () => {
+                // Get mining rate based on status
+                const baseRate = user.isPowerMember ? 0.075 : 
+                                user.minerStatus === "gold" ? 0.05 : 0.01;
+                
+                // Calculate tokens to mine
+                const tokensToMine = baseRate * getEngagementMultiplier();
+                
+                // Update UI
+                const minedElement = document.getElementById('minedTokens');
+                const balanceElement = document.getElementById('tokenBalance');
+                
+                const minedValue = (parseFloat(minedElement.textContent) + tokensToMine).toFixed(4);
+                const balanceValue = (parseFloat(balanceElement.textContent) + tokensToMine).toFixed(4);
+                
+                minedElement.textContent = minedValue;
+                balanceElement.textContent = balanceValue;
+                
+                // Save to database
+                await db.collection("mining_records").insertOne({
+                    address: userAddress,
+                    amount: tokensToMine,
+                    timestamp: new Date()
+                });
+            }, 60000); // Every minute
+        }
+        
+        function getEngagementMultiplier() {
+            // Implement engagement multiplier logic
+            return 1; // Base multiplier
+        }
+
+        // =====================
+        // ICO COUNTDOWN
+        // =====================
+        function startCountdown(days) {
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + days);
+            
+            const countdownElement = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = endDate - now;
+                
+                if (distance < 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "ICO Ended!";
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        // =====================
+        // TOKEN SWAP
+        // =====================
+        async function swapTokens() {
+            const fromToken = document.getElementById('fromToken').value;
+            const toToken = document.getElementById('toToken').value;
+            const amount = parseFloat(document.getElementById('fromAmount').value);
+            
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount");
+                return;
+            }
+            
+            // Apply 1% burn fee
+            const burnFee = amount * 0.01;
+            const netAmount = amount - burnFee;
+            
+            // Record burn transaction
+            await db.collection("burns").insertOne({
+                amount: burnFee,
+                timestamp: new Date()
             });
             
-            // Voting controls
-            const voteBtns = document.querySelectorAll('.vote-btn');
-            voteBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const current = document.querySelector('.voting-section .price-value');
-                    const value = parseFloat(current.textContent);
-                    if(this.textContent.includes('-')) {
-                        current.textContent = (value - 0.5).toFixed(2) + '%';
-                    } else {
-                        current.textContent = (value + 0.5).toFixed(2) + '%';
+            // Save transaction to database
+            await db.collection("transactions").insertOne({
+                from: userAddress,
+                to: "swap",
+                fromToken,
+                toToken,
+                amount: netAmount,
+                fee: burnFee,
+                timestamp: new Date()
+            });
+            
+            // Show success message
+            alert(`Swapped ${netAmount.toFixed(4)} ${fromToken} to ${toToken} (${burnFee.toFixed(4)} burned)`);
+            
+            // Update balance display
+            const balanceElement = document.getElementById('tokenBalance');
+            balanceElement.textContent = (parseFloat(balanceElement.textContent) - amount).toFixed(4);
+        }
+
+        // =====================
+        // PRICE VOTING
+        // =====================
+        function updateProposedPrice() {
+            document.getElementById('proposedPrice').textContent = 
+                document.getElementById('priceSlider').value;
+        }
+        
+        async function submitVote() {
+            const price = parseFloat(document.getElementById('priceSlider').value);
+            
+            // Check token balance
+            const balance = parseFloat(document.getElementById('tokenBalance').textContent);
+            if (balance < 100) {
+                alert("You need at least 100 MZLx to vote");
+                return;
+            }
+            
+            // Save vote to database
+            await db.collection("votes").insertOne({
+                address: userAddress,
+                price,
+                timestamp: new Date()
+            });
+            
+            // Show success message
+            alert("Vote submitted successfully!");
+        }
+        
+        function checkVotingStatus() {
+            const now = new Date();
+            const nigeriaTime = now.getUTCHours() + 1; // WAT is UTC+1
+            
+            // Voting open 6PM-11:30PM Nigeria time
+            if (nigeriaTime >= 18 && nigeriaTime < 23.5) {
+                document.getElementById('votingStatus').textContent = "Voting open!";
+                document.getElementById('votingStatus').style.color = "green";
+            } else {
+                document.getElementById('votingStatus').textContent = "Voting closed. Opens 6-11:30 PM WAT";
+                document.getElementById('votingStatus').style.color = "red";
+            }
+            
+            // Check every minute
+            setTimeout(checkVotingStatus, 60000);
+        }
+
+        // =====================
+        // DEPOSIT SYSTEM
+        // =====================
+        async function processDeposit() {
+            const amount = document.getElementById('depositAmount').value;
+            const method = document.getElementById('paymentMethod').value;
+            
+            if(method === 'bank_transfer') {
+                // Generate reference
+                const ref = 'ECOM-' + Date.now();
+                document.getElementById('refNumber').textContent = ref;
+                document.getElementById('manualDeposit').classList.remove('hidden');
+                
+                // Save to pending deposits
+                await db.collection("deposits").insertOne({
+                    userId: userAddress,
+                    amount: parseFloat(amount),
+                    currency: "NGN",
+                    reference: ref,
+                    status: "pending",
+                    timestamp: new Date()
+                });
+            } else {
+                // Card payment with Flutterwave
+                FlutterwaveCheckout({
+                    public_key: FLW_PUBLIC_KEY,
+                    tx_ref: "ECOM-" + Date.now(),
+                    amount: amount,
+                    currency: "NGN",
+                    payment_options: "card",
+                    customer: {
+                        email: "user@example.com",
+                        name: userAddress.substring(0,6) + '...'
+                    },
+                    callback: function(response) {
+                        if(response.status === "successful") {
+                            // Save successful deposit
+                            db.collection("deposits").insertOne({
+                                userId: userAddress,
+                                amount: parseFloat(amount),
+                                currency: "NGN",
+                                reference: response.transaction_id,
+                                status: "approved",
+                                timestamp: new Date()
+                            });
+                            
+                            // Credit user
+                            creditUserAccount(amount, "NGN");
+                            alert("Deposit successful!");
+                        }
                     }
                 });
+            }
+        }
+        
+        async function confirmManualDeposit() {
+            const ref = document.getElementById('refNumber').textContent;
+            alert("Deposit confirmation sent to admin for approval");
+            document.getElementById('manualDeposit').classList.add('hidden');
+        }
+        
+        async function creditUserAccount(amount, currency) {
+            // Update user balance in MongoDB
+            await db.collection("wallets").updateOne(
+                { userId: userAddress },
+                { $inc: { [currency]: parseFloat(amount) } },
+                { upsert: true }
+            );
+            
+            // Update UI
+            document.getElementById('tokenBalance').textContent = 
+                (parseFloat(document.getElementById('tokenBalance').textContent) + 
+                parseFloat(amount)).toFixed(2);
+        }
+
+        // =====================
+        // VOICE MESSAGING
+        // =====================
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = () => {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    document.getElementById('audioPlayback').src = audioUrl;
+                    document.getElementById('audioPlayback').classList.remove('hidden');
+                };
+                
+                mediaRecorder.start();
+                document.getElementById('recordBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+            } catch (error) {
+                console.error("Recording failed:", error);
+                alert("Microphone access required for voice messages");
+            }
+        }
+        
+        function stopRecording() {
+            mediaRecorder.stop();
+            document.getElementById('recordBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+        }
+        
+        async function sendVoiceMessage() {
+            const recipient = document.getElementById('messageRecipient').value;
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            
+            // Convert to base64
+            const reader = new FileReader();
+            reader.readAsDataURL(audioBlob);
+            reader.onloadend = async () => {
+                const base64Audio = reader.result;
+                
+                // Check for vulgar words (simulated)
+                const containsVulgar = await checkForVulgar(base64Audio);
+                
+                if(containsVulgar) {
+                    document.getElementById('vulgarWarning').style.display = 'block';
+                    return;
+                }
+                
+                // Save to database
+                await db.collection("voice_messages").insertOne({
+                    sender: userAddress,
+                    recipient,
+                    audio: base64Audio,
+                    timestamp: new Date(),
+                    isFiltered: false
+                });
+                
+                alert("Voice message sent!");
+            };
+        }
+        
+        // Simulated vulgar word detection
+        async function checkForVulgar(audioData) {
+            // In real implementation, send to AI API
+            return false; // Simulate no vulgar words
+        }
+
+        // =====================
+        // AFFILIATE PROGRAM
+        // =====================
+        async function initAffiliate(user) {
+            // Update UI
+            document.getElementById('referralCode').textContent = user.referralCode;
+            document.getElementById('referralLink').textContent = 
+                `https://masolites.github.io/ecom?ref=${user.referralCode}`;
+            
+            // Load downline
+            const downline = user.downline || [];
+            const downlineList = document.getElementById('downlineList');
+            downlineList.innerHTML = '';
+            
+            downline.forEach(address => {
+                const li = document.createElement('li');
+                li.textContent = address.substring(0,10) + '...';
+                downlineList.appendChild(li);
             });
-        });
+        }
+
+        // =====================
+        // ESCROW SYSTEM
+        // =====================
+        async function createEscrow() {
+            const recipient = document.getElementById('escrowRecipient').value;
+            const amount = parseFloat(document.getElementById('escrowAmount').value);
+            const terms = document.getElementById('escrowTerms').value;
+            
+            // Create escrow
+            await db.collection("escrows").insertOne({
+                sender: userAddress,
+                recipient,
+                amount,
+                terms,
+                status: "pending",
+                timestamp: new Date()
+            });
+            
+            alert("Escrow created successfully!");
+            loadEscrows();
+        }
+        
+        async function loadEscrows() {
+            const escrows = await db.collection("escrows")
+                .find({ $or: [{ sender: userAddress }, { recipient: userAddress }] })
+                .toArray();
+            
+            const escrowList = document.getElementById('escrowList');
+            escrowList.innerHTML = '';
+            
+            escrows.forEach(escrow => {
+                const row = escrowList.insertRow();
+                row.insertCell(0).textContent = escrow.recipient.substring(0,10) + '...';
+                row.insertCell(1).textContent = escrow.amount;
+                row.insertCell(2).textContent = escrow.status;
+                
+                const actionCell = row.insertCell(3);
+                if(escrow.status === "pending" && userAddress === escrow.recipient) {
+                    const releaseBtn = document.createElement('button');
+                    releaseBtn.textContent = 'Release';
+                    releaseBtn.onclick = () => releaseEscrow(escrow._id);
+                    actionCell.appendChild(releaseBtn);
+                    
+                    const disputeBtn = document.createElement('button');
+                    disputeBtn.textContent = 'Dispute';
+                    disputeBtn.onclick = () => disputeEscrow(escrow._id);
+                    disputeBtn.style.marginLeft = '5px';
+                    actionCell.appendChild(disputeBtn);
+                }
+            });
+        }
+        
+        async function releaseEscrow(escrowId) {
+            await db.collection("escrows").updateOne(
+                { _id: escrowId },
+                { $set: { status: "completed" } }
+            );
+            
+            // Transfer tokens (simulated)
+            alert("Escrow released! Tokens transferred.");
+            loadEscrows();
+        }
+        
+        async function disputeEscrow(escrowId) {
+            await db.collection("escrows").updateOne(
+                { _id: escrowId },
+                { $set: { status: "disputed" } }
+            );
+            
+            alert("Escrow disputed! Admin will review.");
+            loadEscrows();
+        }
+
+        // =====================
+        // PIN PROTECTION
+        // =====================
+        async function setPin() {
+            const pin = document.getElementById('pinInput').value;
+            if(pin.length !== 4) {
+                alert("PIN must be 4 digits");
+                return;
+            }
+            
+            // Save PIN to database
+            await db.collection("users").updateOne(
+                { address: userAddress },
+                { $set: { pin } },
+                { upsert: true }
+            );
+            
+            alert("PIN set successfully!");
+        }
+        
+        function lockWallet() {
+            userAddress = "";
+            document.getElementById('walletStatus').textContent = "Wallet locked";
+            alert("Wallet locked. Reconnect to access.");
+        }
+
+        // =====================
+        // POWER MEMBER UPGRADE
+        // =====================
+        async function upgradeToPowerMember() {
+            // Process payment through Flutterwave
+            FlutterwaveCheckout({
+                public_key: FLW_PUBLIC_KEY,
+                tx_ref: "POWER-" + Date.now(),
+                amount: 1000,
+                currency: "NGN",
+                payment_options: "card, banktransfer",
+                customer: {
+                    email: "user@example.com",
+                    name: userAddress.substring(0,6) + '...'
+                },
+                callback: async function(response) {
+                    if(response.status === "successful") {
+                        // Update user status
+                        await db.collection("users").updateOne(
+                            { address: userAddress },
+                            { $set: { isPowerMember: true } }
+                        );
+                        
+                        // Award bonus tokens (2.5% of 1000 NGN at current rate)
+                        const bonusTokens = 25; // Calculation based on token price
+                        await db.collection("transactions").insertOne({
+                            userId: userAddress,
+                            type: "power_bonus",
+                            amount: bonusTokens,
+                            currency: "MZLx",
+                            timestamp: new Date()
+                        });
+                        
+                        // Update UI
+                        document.getElementById('minerStatus').textContent = "💎 Power Member";
+                        document.getElementById('minerStatus').className = "miner-badge power";
+                        document.getElementById('miningRate').textContent = "0.075";
+                        
+                        // Update token balance
+                        const balanceElement = document.getElementById('tokenBalance');
+                        balanceElement.textContent = (parseFloat(balanceElement.textContent) + bonusTokens).toFixed(4);
+                        
+                        alert(`Power membership activated! ${bonusTokens} MZLx bonus awarded`);
+                    }
+                }
+            });
+        }
+
+        // =====================
+        // HELPER FUNCTIONS
+        // =====================
+        async function upgradeToGold() {
+            // Update user status in database
+            await db.collection("users").updateOne(
+                { address: userAddress },
+                { $set: { minerStatus: "gold" } }
+            );
+            
+            // Update UI
+            document.getElementById('minerStatus').textContent = "🥇 Gold Miner";
+            document.getElementById('minerStatus').className = "miner-badge gold";
+            document.getElementById('miningRate').textContent = "0.05";
+        }
+        
+        async function participateICO() {
+            // Implement ICO participation
+            alert("Redirecting to ICO participation...");
+        }
+
+        // Initialize the app
+        window.addEventListener('load', init);
     </script>
 </body>
 </html>
